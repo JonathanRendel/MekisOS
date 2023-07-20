@@ -25,7 +25,7 @@ If the position feedback reaches the soft limit or if the limit switches are act
 #define soft_upper_lim 575
 #define soft_lower_lim 445
 
-#define motor_cutoff 5
+#define motor_cutoff 2
 #define st 10
 
 long m = 500;
@@ -46,7 +46,7 @@ void setup() {
 }
 
 void loop() {
-  m = long((double(-enc.read())/3.0)+519.0); //Calculate setpoint value
+  m = long((double(-enc.read())/2.0)+519.0); //Calculate setpoint value
   if (m < 100) m = 100;
   if (m > 900) m = 900;
   setMotorPos(m);
@@ -77,7 +77,7 @@ void turnLeft() {
 }
 
 void turnRight() {
-  if (digitalRead(limit_right) == HIGH || analogRead(pot_pin) >= soft_upper_lim) { //Stop motor if hard or soft limit is reached
+  if (digitalRead(limit_left) == HIGH || analogRead(pot_pin) <= soft_lower_lim) { //Stop motor if hard or soft limit is reached
     stopMotor();
   } else {
     digitalWrite(motor_dir, LOW);
